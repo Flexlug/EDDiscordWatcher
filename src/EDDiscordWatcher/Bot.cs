@@ -2,6 +2,8 @@
 using DSharpPlus.CommandsNext;
 using EDDiscordWatcher.Commands;
 using EDDiscordWatcher.Configurations;
+using EDDiscordWatcher.Services;
+using EDDiscordWatcher.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -68,6 +70,8 @@ internal class Bot : IDisposable
         Log.Logger.Debug("Configuring services");
         _services = new ServiceCollection()
             .AddLogging(conf => conf.AddSerilog(dispose: true))
+            .AddSingleton<IEDDNMessagesService, EDDNMessagesService>()
+            .AddSingleton<IDrakeWatcherService, DrakeWatcherService>()
             .BuildServiceProvider();
     }
     public async Task RunAsync()
