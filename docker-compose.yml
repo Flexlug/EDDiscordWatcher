@@ -4,7 +4,7 @@ services:
     eddiscordwatcher:
         build:
             image: eddiscordwatcher
-            context: ./src/EDDiscordWatcher
+            context: .
         image: eddiscordwatcher
         restart: always
 

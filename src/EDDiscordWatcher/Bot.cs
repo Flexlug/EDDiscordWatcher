@@ -57,4 +57,9 @@ internal class Bot : IDisposable
     {
         throw new NotImplementedException();
     }
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 }
