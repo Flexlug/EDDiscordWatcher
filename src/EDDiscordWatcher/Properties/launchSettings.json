@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EDDiscordWatcher": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

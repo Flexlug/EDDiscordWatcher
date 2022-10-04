@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    eddiscordwatcher:
+        build:
+            image: eddiscordwatcher
+            context: ./src/EDDiscordWatcher
+        image: eddiscordwatcher
+        restart: always
+
+        environment:
+            "DISCORD_TOKEN": "Single string. Discord token here"
+            "DISCORD_PREFIX": "Single string. dr!"
+            "DRAKE_ID": "ulong (or UInt64). Insert drake id here. Not name!"
+            "DRAKE_WEBHOOK_ID": "Single string. Insert webhook id, where drake events will be publeshed"
+            "DRAKE_WEBHOOK_TOKEN": "Single string. Insert webhook token, where drake events will be publeshed"
+            "DRAKE_WEBHOOK_EMBED_IMAGE": "Single string. Insert image, which will be displayed, when drake jumped"
