@@ -70,6 +70,7 @@ internal class Bot : IDisposable
         Log.Logger.Debug("Configuring services");
         _services = new ServiceCollection()
             .AddLogging(conf => conf.AddSerilog(dispose: true))
+            .AddSingleton(_settings)
             .AddSingleton<IEDDNMessagesService, EDDNMessagesService>()
             .AddSingleton<IDrakeWatcherService, DrakeWatcherService>()
             .BuildServiceProvider();
