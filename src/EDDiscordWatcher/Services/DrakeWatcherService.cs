@@ -47,7 +47,7 @@ namespace EDDiscordWatcher.Services
                     .Build();
 
                 _webhook.ExecuteAsync(new DiscordWebhookBuilder()
-                    .AddEmbed(embedBuilder));
+                    .AddEmbed(embedBuilder)).ConfigureAwait(false);
             }
         }
     }
