@@ -71,6 +71,7 @@ internal class Bot : IDisposable
         _services = new ServiceCollection()
             .AddLogging(conf => conf.AddSerilog(dispose: true))
             .AddSingleton(_settings)
+            .AddSingleton(_discord)
             .AddSingleton<IEDDNMessagesService, EDDNMessagesService>()
             .AddSingleton<IDrakeWatcherService, DrakeWatcherService>()
             .BuildServiceProvider();
