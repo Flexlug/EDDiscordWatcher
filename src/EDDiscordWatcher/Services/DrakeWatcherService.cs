@@ -33,8 +33,8 @@ namespace EDDiscordWatcher.Services
 
         private void _eddnMessagesService_OnMessage(string message)
         {
-            //if (message.Contains($"\"StationName\": {_drakeId}") && message.Contains("\"event\": \"CarrierJump\","))
-            if (message.Contains("\"event\": \"CarrierJump\","))
+            //if (message.Contains($"\"StationName\": {_drakeId}") && message.Contains("\"event\": \"CarrierJump\""))
+            if (message.Contains("\"event\": \"CarrierJump\""))
             {
                 var drakeJumpMessage = JsonConvert.DeserializeObject<DrakeJumpMessage>(message);
 

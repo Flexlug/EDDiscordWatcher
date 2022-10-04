@@ -16,12 +16,14 @@ namespace EDDiscordWatcher.Services
     internal class EDDNMessagesService : IEDDNMessagesService
     {
         public event IEDDNMessagesService.EventMessageHandler OnMessage;
+        public bool IsEnabled { get; set; } = true;
 
-        public bool IsEnabled { get; set; }
+        private Thread _thread;
 
         public EDDNMessagesService(Settings settings)
         {
-            Start();
+            _thread = new Thread(new ThreadStart(Start));
+            _thread.Start();
         }
 
         private void Start()
@@ -48,10 +50,15 @@ namespace EDDiscordWatcher.Services
                         var uncompressed = ZlibStream.UncompressBuffer(bytes);
                         var result = Encoding.UTF8.GetString(uncompressed);
 
-                        OnMessage.Invoke(result);
+                        OnMessage?.Invoke(result);
                     }
                 }
             }
+        }
+
+        ~EDDNMessagesService()
+        {
+            IsEnabled = false;
         }
     }
 }
