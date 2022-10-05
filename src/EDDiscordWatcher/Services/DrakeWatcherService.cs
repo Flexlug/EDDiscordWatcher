@@ -25,6 +25,8 @@ namespace EDDiscordWatcher.Services
         private string _drakeName;
         private string _drakeWebhookEmbedImage;
 
+        private DateTime _lastMessageDate;
+
         public DrakeWatcherService(IEDDNMessagesService eddnMessagesService, ILogger<DrakeWatcherService> logger, Settings settings, DiscordClient client)
         {
             _webhook = client.GetWebhookWithTokenAsync(settings.DrakeWebhookId, settings.DrakeWebhookToken).Result;
@@ -37,6 +39,9 @@ namespace EDDiscordWatcher.Services
             _eddnMessagesService = eddnMessagesService;
             _eddnMessagesService.OnMessage += EddnMessagesService_OnMessage;
 
+            // Set yesterday to guarantee that first message after bot execution will be processed
+            _lastMessageDate = DateTime.Now - TimeSpan.FromDays(1);
+            
             logger.LogInformation($"{nameof(DrakeWatcherService)} is loaded");
         }
 
@@ -46,6 +51,12 @@ namespace EDDiscordWatcher.Services
             {
                 _logger.LogInformation("Got CarrierJump event");
 
+                if (DateTime.Now - _lastMessageDate < TimeSpan.FromMinutes(10))
+                {
+                    _logger.LogInformation("CarrierJump event is duplicate");
+                    return;
+                }
+                
                 DrakeJumpMessage drakeJumpMessage = null;
                 try
                 {
