@@ -1,6 +1,7 @@
 ﻿using EDDiscordWatcher.Configurations;
 using EDDiscordWatcher.Services.Interfaces;
 using Ionic.Zlib;
+using Microsoft.Extensions.Logging;
 using NetMQ;
 using NetMQ.Sockets;
 using System;
@@ -19,11 +20,16 @@ namespace EDDiscordWatcher.Services
         public bool IsEnabled { get; set; } = true;
 
         private Thread _thread;
+        private ILogger<EDDNMessagesService> _logger;
 
-        public EDDNMessagesService(Settings settings)
+        public EDDNMessagesService(ILogger<EDDNMessagesService> logger)
         {
+            _logger = logger;
+
             _thread = new Thread(new ThreadStart(Start));
             _thread.Start();
+
+            logger.LogInformation($"{nameof(EDDNMessagesService)} is loaded");
         }
 
         private void Start()
@@ -31,27 +37,34 @@ namespace EDDiscordWatcher.Services
             // Autorestart socket on failure
             while (IsEnabled)
             {
-                using (var client = new SubscriberSocket())
+                try
                 {
-                    int count = 1;
-
-                    client.Options.ReceiveHighWatermark = 1000;
-                    client.Connect("tcp://eddn.edcd.io:9500");
-                    client.SubscribeToAnyTopic();
-
-                    while (IsEnabled)
+                    using (var client = new SubscriberSocket())
                     {
-                        byte[] bytes;
-                        if (!client.TryReceiveFrameBytes(TimeSpan.FromMinutes(1), out bytes))
+                        int count = 1;
+
+                        client.Options.ReceiveHighWatermark = 1000;
+                        client.Connect("tcp://eddn.edcd.io:9500");
+                        client.SubscribeToAnyTopic();
+
+                        while (IsEnabled)
                         {
-                            continue;
+                            byte[] bytes;
+                            if (!client.TryReceiveFrameBytes(TimeSpan.FromMinutes(1), out bytes))
+                            {
+                                continue;
+                            }
+
+                            var uncompressed = ZlibStream.UncompressBuffer(bytes);
+                            var result = Encoding.UTF8.GetString(uncompressed);
+
+                            OnMessage?.Invoke(result);
                         }
-
-                        var uncompressed = ZlibStream.UncompressBuffer(bytes);
-                        var result = Encoding.UTF8.GetString(uncompressed);
-
-                        OnMessage?.Invoke(result);
                     }
+                }
+                catch(Exception e)
+                {
+                    _logger.LogError($"Error in {nameof(EDDNMessagesService)} parsing thread", e);                
                 }
             }
         }
