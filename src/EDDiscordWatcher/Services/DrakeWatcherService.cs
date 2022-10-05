@@ -44,10 +44,10 @@ namespace EDDiscordWatcher.Services
             
             logger.LogInformation($"{nameof(DrakeWatcherService)} is loaded");
         }
-
+        
         private void EddnMessagesService_OnMessage(string message)
         {
-            if (message.Contains($"\"StationName\": {_drakeId}") && message.Contains("\"event\": \"CarrierJump\""))
+            if (message.Contains($"\"StationName\": \"{_drakeId}\"") && message.Contains("\"event\": \"CarrierJump\""))
             {
                 _logger.LogInformation("Got CarrierJump event");
 
