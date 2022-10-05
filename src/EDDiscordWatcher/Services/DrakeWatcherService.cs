@@ -22,6 +22,7 @@ namespace EDDiscordWatcher.Services
         private ILogger<DrakeWatcherService> _logger;
 
         private string _drakeId;
+        private string _drakeName;
         private string _drakeWebhookEmbedImage;
 
         public DrakeWatcherService(IEDDNMessagesService eddnMessagesService, ILogger<DrakeWatcherService> logger, Settings settings, DiscordClient client)
@@ -29,6 +30,7 @@ namespace EDDiscordWatcher.Services
             _webhook = client.GetWebhookWithTokenAsync(settings.DrakeWebhookId, settings.DrakeWebhookToken).Result;
 
             _drakeId = settings.DrakeId;
+            _drakeName = settings.DrakeName;
             _drakeWebhookEmbedImage = settings.DrakeWebhookEmbedImage;
             _logger = logger;
 
@@ -40,8 +42,7 @@ namespace EDDiscordWatcher.Services
 
         private void EddnMessagesService_OnMessage(string message)
         {
-            //if (message.Contains($"\"StationName\": {_drakeId}") && message.Contains("\"event\": \"CarrierJump\""))
-            if (message.Contains("\"event\": \"CarrierJump\""))
+            if (message.Contains($"\"StationName\": {_drakeId}") && message.Contains("\"event\": \"CarrierJump\""))
             {
                 _logger.LogInformation("Got CarrierJump event");
 
@@ -63,8 +64,8 @@ namespace EDDiscordWatcher.Services
 
                 var embedBuilder = new DiscordEmbedBuilder()
                     .WithImageUrl(_drakeWebhookEmbedImage)
-                    .WithTitle($"⚠️ {drakeJumpMessage.message.StationName} AUTOMATIC LOG ⚠️")
-                    .WithDescription($"{drakeJumpMessage.message.StationName} прибыл в систему {drakeJumpMessage.message.StarSystem} к объекту {drakeJumpMessage.message.Body}. Тип объекта: {drakeJumpMessage.message.BodyType}")
+                    .WithTitle($"⚠️ {_drakeName} AUTOMATIC LOG ⚠️")
+                    .WithDescription($"{_drakeName} прибыл в систему {drakeJumpMessage.message.StarSystem} к объекту {drakeJumpMessage.message.Body}. Тип объекта: {drakeJumpMessage.message.BodyType}")
                     .WithTimestamp(DateTime.Now)
                     .WithFooter($"Message source: {drakeJumpMessage.header.uploaderID}")
                     .Build();
