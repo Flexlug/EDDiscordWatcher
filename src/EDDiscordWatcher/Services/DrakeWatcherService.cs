@@ -83,6 +83,8 @@ namespace EDDiscordWatcher.Services
 
                 _webhook.ExecuteAsync(new DiscordWebhookBuilder()
                     .AddEmbed(embedBuilder)).ConfigureAwait(false);
+                
+                _lastMessageDate = DateTime.Now;
             }
         }
     }
