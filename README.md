@@ -22,7 +22,7 @@ cd EDDiscordWatcher
 ```shell
 nano docker-compose.yml
 ```
-5. You'll see `docker-cmpose.yml`:
+5. You'll see `docker-compose.yml`:
 ```yaml
 version: '3.8'
 
@@ -91,7 +91,7 @@ cd EDDiscordWatcher
 nano docker-compose.yml
 ```
 
-5. Вы увидите `docker-cmpose.yml`:
+5. Вы увидите `docker-compose.yml`:
 ```yaml
 version: '3.8'
 
