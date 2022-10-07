@@ -1,5 +1,5 @@
 # EDDiscordWatcher
-Discord bot which automaticly posts messages about specific Drake-Class carrier.
+Discord bot which automaticly posts messages about specific Drake-Class carrier jumps.
 
 ## Requirements
 - Registered Discord bot;
