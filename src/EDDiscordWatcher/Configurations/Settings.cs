@@ -14,7 +14,7 @@ namespace EDDiscordWatcher.Configurations
         public string DrakeName { get; set; }
         public ulong DrakeWebhookId { get; set; }
         public string DrakeWebhookToken { get; set; }
-        public string DrakeWebhookEmbedImage { get; set; } = @"https://cdn.discordapp.com/attachments/839633777491574785/1026974399108231228/unknown.png";
+        public string DrakeWebhookEmbedImage { get; set; }
         #endregion
     }
 }
