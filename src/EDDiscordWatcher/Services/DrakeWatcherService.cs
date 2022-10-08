@@ -75,7 +75,7 @@ namespace EDDiscordWatcher.Services
 
                 var embedBuilder = new DiscordEmbedBuilder()
                     .WithImageUrl(_drakeWebhookEmbedImage)
-                    .WithTitle($"⚠️ {_drakeName} AUTOMATIC LOG ⚠️")
+                    .WithAuthor("COVAS KELVIN", iconUrl:@"https://cdn.discordapp.com/attachments/839633777491574785/1028419699282812938/unknown.png")
                     .WithDescription($"{_drakeName} прибыл в систему {drakeJumpMessage.message.StarSystem} к объекту {drakeJumpMessage.message.Body}. Тип объекта: {drakeJumpMessage.message.BodyType}")
                     .WithTimestamp(DateTime.Now)
                     .WithFooter($"Message source: {drakeJumpMessage.header.uploaderID}")
