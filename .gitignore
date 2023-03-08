@@ -3,6 +3,7 @@
 bin/
 obj/
 /packages/
+/build
 riderModule.iml
 /_ReSharper.Caches/
 /src/EDDiscordWatcher/Properties/launchSettings.Production.json
